@@ -26,8 +26,7 @@ export async function saveTask(titulo, descripcion, timestamp) {
   }
 }
 
-/*.collection("post")
-.orderBy("", "desc")*/
+
 
 
 const orderedQuery = query(colRef, orderBy('timestamps', 'desc'));

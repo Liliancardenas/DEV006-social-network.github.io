@@ -1,12 +1,11 @@
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 import { header } from './contents.js';
 import { borrarPublicacion, likePublicacion, dislikePublicacion, postData } from '../lib/firestore.js';
-import { out } from "../lib/controlador.js";
+import { out } from  '../lib/controlador.js';
 
 
 
-export function home(navigateTo) {
-  
+export function home(navigateTo){
   const nodehome = document.createElement('div');
   const theHeader = header();
   nodehome.appendChild(theHeader);
@@ -22,17 +21,13 @@ export function home(navigateTo) {
     data.setAttribute('id', 'postData');
     data.setAttribute('class', 'postData');
     querySnapshot.forEach((publicacion) => {
-      // console.log('publicacion.id ', publicacion.id);
 
       // contenedor universal de la publicación
       const containerPost = document.createElement('div');
       containerPost.setAttribute('class', 'containerPost');
       containerPost.setAttribute('id', 'containerPostid');
 
-      
-
       if (publicacion.data().userId === user.uid) {
-        //boton 3 puntitus 
         const option = document.createElement('button');
         option.setAttribute('class', 'option');
         option.innerHTML = '<img class="imgDots" src="./imagenes/option.png" >';
@@ -51,8 +46,6 @@ export function home(navigateTo) {
         buttonDelete.setAttribute('style', 'display:none');
         contenedorBotones.appendChild(buttonDelete);
 
-
-
         //boton editar        
         const buttonEdit = document.createElement('button');
         buttonEdit.setAttribute('class', 'buttonEdit');
@@ -61,9 +54,7 @@ export function home(navigateTo) {
         contenedorBotones.appendChild(buttonEdit);
 
 
-        option.addEventListener('click', () => {
-          console.log ("estoy en el option")
-
+       option.addEventListener('click', () => {
           //valida el contenedor de los botones
           const valideitorBotones = option.querySelector('.contenedorBotones');
           if (valideitorBotones.style.display === 'none') {
@@ -72,7 +63,6 @@ export function home(navigateTo) {
             valideitorBotones.style.display = 'none';
           }
           buttonEdit.addEventListener('click', () => {
-            console.log("estoy en edit")
             valideitorBotones.style.display = 'block';
           });
         });
@@ -88,7 +78,6 @@ export function home(navigateTo) {
           buttonDelete.addEventListener('click', () => {
             const modalDelete = document.createElement('div');
             modalDelete.setAttribute('class', 'modalDelete');
-       
 
             const confirmation = document.createElement('p');
             confirmation.innerHTML = '¿Esta seguro que desea eliminar la publicación?';
@@ -206,10 +195,11 @@ export function home(navigateTo) {
   nodehome.appendChild(contenedorMenu);
 
   botonPalta.addEventListener('click', () => {
-    // console.log('estamos en el addEvent');
     navigateTo('/post');
   });
 
+
+// cerra sesión, copiamos codigo de elimar post 
   logOut.addEventListener('click', () => {
     const modalDelete = document.createElement('div');
     modalDelete.setAttribute('class', 'modalDelete');

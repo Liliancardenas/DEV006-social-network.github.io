@@ -5,8 +5,7 @@ import { login } from './components/login';
 import { error } from './components/error';
 import { home } from './components/home';
 import { modal } from './components/modal';
-import {getAuth, onAuthStateChanged } from "firebase/auth";
-// importacion de firebase
+import {getAuth, onAuthStateChanged } from "firebase/auth"; // importacion de firebase
 
 const routes = [
   { path: '/', component: landing },
@@ -18,31 +17,27 @@ const routes = [
   { path: '/post', component: modal },
 ];
 
-// Ruta que queda por defectp (aca se define  que siempre se abre en landing )
-const defaultRoute = '/';
-const contenedor = document.getElementById('contenedorUniversal');
+const defaultRoute = '/'; // Ruta que queda por defecto (aca se define  que siempre se abre en landing )
+const contenedor = document.getElementById('contenedorUniversal'); // variable que accede al nodo de HTML
 
-function navigateTo(hash) {
+
+function navigateTo(hash) { // funcion que permite navegar en diferentes rutas
   // esta linea es la que se encarga de  de path (que estan dentro del objeto routes)
   // sea igual a hash (que es a la ruta en la que el usuario quiere acceser)
   // lo hace a través del metodo find(que es una propiedad para iterar sobre objetos
   // y busca coincidencia)
-  // console.log(hash)
   // DEFINICION DE COMPONENTE:  Un componente en el contexto de desarrollo de aplicaciones
   // se refiere a una parte modular y reutilizable de la interfaz de usuario que encapsula
   // su propio comportamiento, estado y estilo.
   const route = routes.find((routeFound) => routeFound.path === hash);
-  // console.log(route)
-  // si encuentra ruta valida(que se guardo en la variable route) y si esa ruta tiene un
-  // componente valido (con route.component)
+  // Crearemos route cuyo valor será el objeto que retorne el método find. routerfound, funcion de retorno(representa cada elemento del arreglo)
   if (route && route.component) {
-    // console.log("entramos al if")
     // este bloque hace que se genere el cambio de url si es que las coincidencias del if son true
-    // pasa 3 argumento
-    window.history.pushState(
-      // vacio, se conoce como state asociado con el historial (por lo que entendi
+    // pasa 3 argumento , titulo(string de ruta), url
+    window.history.pushState( // agregando un registro al historial de navegacion con el metodo push
+      // vacio, se conoce como state asociado con el historial
       // en el se almacena info importante)
-      {},
+      {}, //estado (vacio)
       // ruta encontrada y se muestra en el navegador. ej: /login
       route.path,
       // url completa
@@ -50,12 +45,12 @@ function navigateTo(hash) {
       // es la ruta encontrada en el objeto ambas se concatenan y se crea la url
       window.location.origin + route.path,
     );
-    while (contenedor.firstChild) {
+    while (contenedor.firstChild) { // elementos que vamos a renderizar en el DOM
       contenedor.removeChild(contenedor.firstChild);
     }
     contenedor.appendChild(route.component(navigateTo));
   } else {
-    navigateTo('/error');
+    navigateTo('/error'); // para queno tire undefine
   }
 }
 
@@ -65,22 +60,22 @@ window.onpopstate = () => {
   navigateTo(window.location.pathname);
 };
 
-navigateTo(window.location.pathname || defaultRoute);
+navigateTo(window.location.pathname || defaultRoute); // ruta que la persona escriba o la que va por defecto
 
 
+
+// Funcion para que solo usuarios registrados puedan entrar al home
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log('me logie', user);
     navigateTo('/home');
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
+
     const uid = user.uid;
-    // ...
+    
   } else {
     console.log('Sin logear', user);
     navigateTo('/');
-    // User is signed out
-    // ...
+ 
   }
 });
